@@ -1,0 +1,16 @@
+{
+  "en": {
+    "translation": {
+      "api_errors.generic_api_error": "An error occurred, please try again later",
+      "api_errors.WorkspaceNotFound": "Workspace not found"
+    }
+  },
+  "fr": {
+    "translation": {
+      "My account": "Mon compte",
+      "api_errors.WorkspaceAlreadyExporting": "Une communauté est déjà en cours d'export",
+      "api_errors.generic_api_error": "Une erreur a eu lieu, réessayez dans quelques instants",
+      "api_errors.WorkspaceNotFound": "Communauté non trouvée"
+    }
+  }
+}
