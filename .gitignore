@@ -47,6 +47,9 @@ env.d/terraform
 # npm
 node_modules
 
+# turborepo
+.turbo
+
 # Mails
 src/backend/core/templates/mail/
 

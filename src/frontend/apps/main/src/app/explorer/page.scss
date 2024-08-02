@@ -1,0 +1,40 @@
+.suite__explorer {
+
+  //display: flex;
+  //flex-direction: column;
+  //justify-content: space-between;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 24px;
+    position: sticky;
+    top: 0;
+
+    h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+  }
+
+  &__search {
+    padding: 16px 24px;
+    width: 420px;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 24px;
+    position: fixed;
+    top: 780px;
+    left: 0;
+    right: 0;
+
+    &__actions {
+      display: flex;
+      gap: 12px;
+    }
+  }
+}

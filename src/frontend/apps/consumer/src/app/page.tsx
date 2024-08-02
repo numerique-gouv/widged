@@ -1,49 +1,44 @@
-"use client"
-import { useEffect, useRef, useState } from 'react';
+'use client';
 
+import { File, WidgedClient } from 'lasuite-widged';
+import { useEffect, useState } from 'react';
 
-/**
- * Popup strategy.
- */
+export default function Page() {
+  const [widget, setWidget] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
 
-const ENDPOINT = 'http://localhost:3000';
+  const open = () => {
+    setWidget(true);
+    const client = new WidgedClient();
+    client.pickFile({
+      onSelection: (files: File[]) => {
+        console.log('Selection', files);
+        setFiles(files);
+      },
+    });
+  };
 
-export default function Home() {
+  useEffect(() => {
+    open();
+  }, []);
 
-    const [file, setFile] = useState();
-
-    const open = () => {
-        let win: Window;
-
-        window.onmessage = (event) => {
-            console.log('Message received window', event.data, event.origin);
-            if (event.origin !== ENDPOINT) {
-                console.error('Origin not allowed', event.origin);
-                return;
-            }
-            if (event.data.type === 'FILE_SELECTED') {
-                const data = event.data.data;
-                console.log('File selected', data.file);
-                setFile(data.file)
-                win.close()
-            }
-        }
-
-        let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
-width=1200,height=900,left=100,top=100`;
-        win = window.open(ENDPOINT, '', params);
-        if (!win) {
-            alert('Please allow popups for this website');
-            return;
-        }
-    };
-
-    return (
-      <main>
-          <button onClick={open}>Import un fichier depuis Resana</button>
-          {file && <div>
-              Vous avez selectionné le fichier "{file.name}"
-          </div>}
-      </main>
-    );
+  return (
+    <div>
+      <button onClick={open}>Import un fichier depuis Resana v3</button>
+      {widget && (
+        <div>
+          {files.length > 0 && (
+            <div>
+              Vous avez selectionné les fichiers:{' '}
+              <ul>
+                {files.map((file) => (
+                  <li key={file.name}>{file.name}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }
