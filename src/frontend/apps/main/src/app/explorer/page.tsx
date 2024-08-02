@@ -1,26 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
+import { createContext, useEffect } from 'react';
 
+import { Explorer } from '@/app/explorer/Explorer';
+import { WidgedReverseClient } from '@/app/explorer/WidgedReverseClient';
 import { Auth, useAuth } from '@/core/auth/Auth';
 import { baseApiUrl } from '@/core/conf';
-
-/**
- * TODO: Use API Key.
- */
-const getAllowTargetOrigin = () => {
-  return 'http://localhost:3010/consumer/';
-};
-
-const post = (type: string, data: any) => {
-  window.parent.postMessage(
-    {
-      type,
-      data,
-    },
-    getAllowTargetOrigin(),
-  );
-};
 
 export default function Home() {
   return (
@@ -30,8 +15,17 @@ export default function Home() {
   );
 }
 
+const client = new WidgedReverseClient();
+
+interface ExplorerContextType {
+  client: WidgedReverseClient;
+}
+
+export const ExplorerContext = createContext<ExplorerContextType>({
+  client,
+});
+
 const Nested = () => {
-  const files = ['compte-rendu.pdf', 'schema-api.pdf'];
   const { user, init } = useAuth();
 
   const startSSO = () => {
@@ -60,12 +54,8 @@ width=400,height=900,left=100,top=100`;
     setupBroadcastChannel();
   }, []);
 
-  const choose = (file: string) => {
-    post('FILE_SELECTED', { file: { name: file } });
-  };
-
   return (
-    <div className="container container--center">
+    <ExplorerContext.Provider value={{ client }}>
       {!user && (
         <div>
           <p>Not authenticated</p>
@@ -74,16 +64,9 @@ width=400,height=900,left=100,top=100`;
       )}
       {user && (
         <>
-          <p>Hello {user?.email}</p>
-          <ul>
-            {files.map((file) => (
-              <li key={file}>
-                <button onClick={() => choose(file)}>Choose {file}</button>
-              </li>
-            ))}
-          </ul>
+          <Explorer />
         </>
       )}
-    </div>
+    </ExplorerContext.Provider>
   );
 };

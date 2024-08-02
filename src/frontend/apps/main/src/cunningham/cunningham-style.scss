@@ -200,15 +200,11 @@ input:-webkit-autofill:focus {
 /**
  * DataGrid
 */
-.c__datagrid__table__container {
-  overflow: auto;
-}
 
 .c__datagrid__table__container > table th .c__datagrid__header {
   color: var(--c--components--datagrid--header--color);
   font-weight: var(--c--components--datagrid--header--weight);
   font-size: var(--c--components--datagrid--header--size);
-  padding-block: 2rem;
 }
 
 .c__datagrid__table__container > table tbody tr {
@@ -229,7 +225,7 @@ input:-webkit-autofill:focus {
 
 .c__datagrid__table__container > table th:first-child,
 .c__datagrid__table__container > table td:first-child {
-  padding-left: 2rem;
+  //padding-left: 2rem;
 }
 
 .c__datagrid > .c__pagination {
