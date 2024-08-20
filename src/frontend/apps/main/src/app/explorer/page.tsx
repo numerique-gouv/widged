@@ -17,11 +17,11 @@ export default function Home() {
 
 const client = new WidgedReverseClient();
 
-interface ExplorerContextType {
+interface AppContextType {
   client: WidgedReverseClient;
 }
 
-export const ExplorerContext = createContext<ExplorerContextType>({
+export const AppContext = createContext<AppContextType>({
   client,
 });
 
@@ -55,7 +55,7 @@ width=400,height=900,left=100,top=100`;
   }, []);
 
   return (
-    <ExplorerContext.Provider value={{ client }}>
+    <AppContext.Provider value={{ client }}>
       {!user && (
         <div>
           <p>Not authenticated</p>
@@ -67,6 +67,6 @@ width=400,height=900,left=100,top=100`;
           <Explorer />
         </>
       )}
-    </ExplorerContext.Provider>
+    </AppContext.Provider>
   );
 };

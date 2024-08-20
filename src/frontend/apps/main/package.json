@@ -22,6 +22,7 @@
     "cross-env": "*",
     "i18next": "23.11.5",
     "next": "14.2.3",
+    "pretty-bytes": "^6.1.1",
     "react": "*",
     "react-aria-components": "1.2.1",
     "react-dom": "*",
