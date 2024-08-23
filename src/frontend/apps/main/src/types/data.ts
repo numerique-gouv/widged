@@ -10,3 +10,28 @@ export interface Workspace {
   color: string;
   organization: Organization;
 }
+
+export interface Folder {
+  uuid: string;
+  name: string;
+  parentEntities: Folder[];
+  createdAt: string;
+  editedAt: string;
+  createdBy: string;
+  createdByUser: {
+    name: string;
+  };
+}
+
+export interface File {
+  uuid: string;
+  name: string;
+  parentEntities: string[];
+  createdAt: string;
+  editedAt: string;
+  createdBy: string;
+  createdByUser: {
+    name: string;
+  };
+  size: number;
+}

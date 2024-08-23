@@ -121,6 +121,7 @@ const config = {
         },
         modal: {
           'background-color': '#ffffff',
+          'backdrop-color': '#0c1a2b52',
         },
         button: {
           'border-radius': {
@@ -169,10 +170,8 @@ const config = {
             },
           },
           tertiary: {
-            color: 'var(--c--theme--colors--primary-text)',
             'color-disabled': 'var(--c--theme--colors--greyscale-600)',
             background: {
-              'color-hover': 'var(--c--theme--colors--primary-100)',
               'color-disabled': 'var(--c--theme--colors--greyscale-200)',
             },
           },

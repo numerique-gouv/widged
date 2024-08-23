@@ -364,6 +364,10 @@ input:-webkit-autofill:focus {
   color: var(--c--components--button--disabled--color);
 }
 
+.c__button--tertiary:disabled {
+  background-color: var(--c--theme--colors--greyscale-100);
+}
+
 .c__button--success {
   background-color: var(--c--components--button--success--background--color);
   color: var(--c--components--button--success--color);
@@ -399,36 +403,8 @@ input:-webkit-autofill:focus {
   border: 1px solid var(--c--components--button--secondary--border--color-hover);
 }
 
-.c__button--tertiary {
-  color: var(--c--components--button--tertiary--color);
-  border: none;
-}
-
-.c__button--tertiary:hover,
-.c__button--tertiary:focus-visible {
-  background-color: var(
-    --c--components--button--tertiary--background--color-hover
-  );
-  color: var(--c--components--button--tertiary--color);
-}
-
-.c__button--tertiary:disabled {
-  background-color: var(
-    --c--components--button--tertiary--background--color-disabled
-  );
-  color: var(--c--components--button--tertiary--color-disabled);
-}
-
 .c__button--tertiary-text {
   border: none;
-}
-
-.c__button--tertiary-text:hover,
-.c__button--tertiary-text:focus-visible {
-  background-color: var(
-    --c--components--button--tertiary-text--background--color-hover
-  );
-  color: var(--c--components--button--tertiary-text--color-hover);
 }
 
 .c__button--danger {

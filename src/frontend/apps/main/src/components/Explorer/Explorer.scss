@@ -1,15 +1,11 @@
 .suite__explorer {
 
-  //display: flex;
-  //flex-direction: column;
-  //justify-content: space-between;
-
   &__header {
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 16px 24px;
-    position: sticky;
+    //position: sticky;
     top: 0;
 
     h2 {
@@ -37,6 +33,16 @@
       gap: 12px;
     }
   }
+
+  .c__breadcrumbs {
+    padding: 0 0 16px 12px;
+  }
+
+  .c__datagrid__table__container > table {
+    th:first-child, td:first-child {
+      padding-left: 24px;
+    }
+  }
 }
 
 .suite__explorer__folder {
@@ -44,4 +50,5 @@
   display: flex;
   align-items: center;
   height: 100%;
+  gap: 16px;
 }

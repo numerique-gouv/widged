@@ -19,6 +19,7 @@
   "dependencies": {
     "@gouvfr-lasuite/integration": "1.0.1",
     "@openfun/cunningham-react": "file:/Users/nathanvasse/Documents/code/fun/cunningham/packages/react",
+    "@phosphor-icons/react": "^2.1.7",
     "cross-env": "*",
     "i18next": "23.11.5",
     "next": "14.2.3",

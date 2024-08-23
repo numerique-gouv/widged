@@ -1,0 +1,17 @@
+.suite__workspace-icon {
+  width: 20px;
+  height: 17px;
+  background-color: blueviolet;
+  border-radius: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  padding-bottom: 3px;
+  box-sizing: border-box;
+
+  &__child {
+    background-color: white;
+    width: 70%;
+    height: 3px;
+  }
+}
