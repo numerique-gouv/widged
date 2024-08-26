@@ -60,7 +60,6 @@ const EXTENSION_ICON_MAP: Record<string, Icon> = {
 
 export const FileIcon = ({ file }: { file: File }) => {
   const extension = file.name.split('.').pop();
-  console.log('FileIcon', file.name, extension);
 
   if (!extension) {
     return <FileDefault />;

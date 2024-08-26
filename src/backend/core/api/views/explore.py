@@ -1,8 +1,8 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from faker import Faker
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from core.factories import FolderFactory, FileFactory
+from core.factories import FileFactory, FolderFactory
 
 WORKSPACES = [
     {
@@ -71,10 +71,10 @@ WORKSPACES = [
     }
 ]
 
+
 class WorkspaceView(APIView):
 
     def get(self, request):
-
         return Response({
             "totalItems": len(WORKSPACES),
             "perPage": 100,
@@ -119,7 +119,52 @@ CONTENT = {
                 }, {
                     "uuid": "ggg",
                     "name": "Formation",
-                    "files": [fake.file_name() for _ in range(8)]
+                    "files": [fake.file_name() for _ in range(8)],
+                    "folders": [
+                        {
+                            "uuid": "hhh",
+                            "name": "Technologie",
+                            "files": [fake.file_name() for _ in range(8)],
+                            "folders": [
+                                {
+                                    "uuid": "iii",
+                                    "name": "Programming",
+                                    "files": [fake.file_name() for _ in range(8)],
+                                    "folders": [
+                                        {
+                                            "uuid": "jjj",
+                                            "name": "Python",
+                                            "files": [fake.file_name() for _ in range(8)],
+                                            "folders": [
+                                                {
+                                                    "uuid": "kkk",
+                                                    "name": "Architecture",
+                                                    "files": [fake.file_name() for _ in range(8)],
+                                                    "folders": [
+                                                        {
+                                                            "uuid": "lll",
+                                                            "name": "Cloud Architecture",
+                                                            "files": [fake.file_name() for _ in range(8)],
+                                                            "folders": [
+                                                                {
+                                                                    "uuid": "mmm",
+                                                                    "name": "AWS Architecture",
+                                                                    "files": [fake.file_name() for _ in range(8)],
+                                                                    "folders": [
+
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }
@@ -127,8 +172,7 @@ CONTENT = {
 }
 
 
-
-def get_folder_by_uuid(root, uuid, ancestors = []):
+def get_folder_by_uuid(root, uuid, ancestors=[]):
     if root["uuid"] == uuid:
         root["ancestors"] = ancestors
         return root
@@ -137,7 +181,6 @@ def get_folder_by_uuid(root, uuid, ancestors = []):
         if result:
             return result
     return None
-
 
 
 class TargetExploreView(APIView):
@@ -149,12 +192,11 @@ class TargetExploreView(APIView):
             folder = get_folder_by_uuid(CONTENT, uuid)
 
         if "folders" in folder:
-            folders =  [FolderFactory(sub_folder) for sub_folder in folder["folders"]]
+            folders = [FolderFactory(sub_folder) for sub_folder in folder["folders"]]
         else:
             folders = []
 
         files = [FileFactory(file) for file in folder["files"]]
-
 
         return Response({
             "totalItems": 0,
@@ -166,6 +208,7 @@ class TargetExploreView(APIView):
                 "files": files
             }
         })
+
 
 class TargetDetailsView(APIView):
 
@@ -181,5 +224,6 @@ class TargetDetailsView(APIView):
 
         return Response({
             **folder_data,
-            "parentEntities": [{"name": ancestor["name"] if "name" in ancestor else "", "uuid": ancestor['uuid']} for ancestor in ancestors],
+            "parentEntities": [{"name": ancestor["name"] if "name" in ancestor else "", "uuid": ancestor['uuid']} for
+                               ancestor in ancestors],
         })

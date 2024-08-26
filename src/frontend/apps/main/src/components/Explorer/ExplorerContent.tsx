@@ -1,4 +1,5 @@
 import { Row, SimpleDataGrid } from '@openfun/cunningham-react';
+import { RowSelectionState } from '@tanstack/react-table';
 import prettyBytes from 'pretty-bytes';
 import React, { useContext, useEffect, useState } from 'react';
 
@@ -27,9 +28,10 @@ type ExplorerRow = Row & {
 };
 
 export const ExplorerContent = ({ targetUuid }: { targetUuid: string }) => {
-  const { navigate, setAncestors } = useExplorerContext();
+  const { navigate, setAncestors, selectFile, unselectFile } =
+    useExplorerContext();
   const { fetchApi } = useApi();
-  const [selectedRows, setSelectedRows] = useState({});
+  const [selectedRows, setSelectedRows] = useState<RowSelectionState>({});
   const [isLoading, setIsLoading] = useState(true);
 
   let selectedRowsCount = 0;
@@ -41,22 +43,36 @@ export const ExplorerContent = ({ targetUuid }: { targetUuid: string }) => {
 
   const [rows, setRows] = useState<ExplorerRow[]>([]);
 
-  const { client } = useContext(AppContext);
+  const getSelectedFilesDiff = (newSelectedRows: RowSelectionState) => {
+    const newSelectedFiles = Object.entries(newSelectedRows).filter(
+      (newSelectedRow) => !selectedRows[newSelectedRow[0]],
+    );
+    const unselectedFiles = Object.entries(selectedRows).filter(
+      (selectedRow) => !newSelectedRows[selectedRow[0]],
+    );
 
-  const choose = () => {
-    const selectedFiles = rows.filter((row) => selectedRows[row.id]);
-    console.log('selectedFiles', selectedFiles);
+    const toFiles = (selectionState: [string, boolean][]) => {
+      return selectionState.map(([id, isSelected]) => {
+        const row = rows.find((row) => row.id === id);
+        if (!row) {
+          throw new Error('Row not found');
+        }
+        return row.file!;
+      });
+    };
 
-    client.post(ClientMessageType.SELECTION, {
-      files: selectedFiles,
-    });
+    // console.log('getSelectedFilesDiff', selectedRows);
+
+    return {
+      added: toFiles(newSelectedFiles),
+      removed: toFiles(unselectedFiles),
+    };
   };
 
   useEffect(() => {
     const wrapper = async () => {
       const detailsResponse = await fetchApi(`targets/${targetUuid}/details/`);
       const folder = (await detailsResponse.json()) as Folder;
-      console.log('detailsData', folder);
       setAncestors([...folder.parentEntities, folder]);
 
       const response = await fetchApi(`targets/${targetUuid}/explore/`);
@@ -96,7 +112,7 @@ export const ExplorerContent = ({ targetUuid }: { targetUuid: string }) => {
     void wrapper();
   }, []);
 
-  console.log(rows.length);
+  // console.log('selectedRows', selectedRows);
 
   return (
     <SimpleDataGrid
@@ -151,8 +167,19 @@ export const ExplorerContent = ({ targetUuid }: { targetUuid: string }) => {
       rows={rows}
       enableRowSelection={(row) => row.original.type === ExplorerRowType.FILE}
       rowSelection={selectedRows}
-      onRowSelectionChange={(selectedRows) => {
-        setSelectedRows(selectedRows);
+      onRowSelectionChange={(newSelectedRows) => {
+        // console.log('onRowSelectionChange', 'selectedRows', selectedRows);
+        setSelectedRows(newSelectedRows);
+
+        // console.log(getSelectedFilesDiff(newSelectedRows));
+        const diff = getSelectedFilesDiff(newSelectedRows);
+        // console.log('diff', diff);
+        diff.added.forEach((added) => {
+          selectFile(added);
+        });
+        diff.removed.forEach((removed) => {
+          unselectFile(removed);
+        });
       }}
     />
   );

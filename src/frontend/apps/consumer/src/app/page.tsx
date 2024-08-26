@@ -13,6 +13,7 @@ export default function Page() {
     client.pickFile({
       onSelection: (files: File[]) => {
         console.log('Selection', files);
+        setFiles(files);
       },
     });
   };
