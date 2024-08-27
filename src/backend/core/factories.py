@@ -46,7 +46,7 @@ def FolderFactory(folder):
 def FileFactory(name):
     fake = Faker()
     return {
-        "uuid": fake.uuid4(),
+        "uuid": name,
         "name": name,
         "parentEntities": [
             "05-01-49bd69be-4bc1-4049-abb8-3d13a2135e25",

@@ -11,6 +11,7 @@ export default function Page() {
     setWidget(true);
     const client = new WidgedClient();
     client.pickFile({
+      maxFiles: 2,
       onSelection: (files: File[]) => {
         console.log('Selection', files);
         setFiles(files);

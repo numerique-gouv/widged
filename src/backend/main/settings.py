@@ -396,6 +396,8 @@ class Base(Configuration):
         "SHOW_TOOLBAR_CALLBACK": lambda request: True,
     }
 
+    CONTENT_BACKEND = values.Value(environ_name="CONTENT_BACKEND", environ_prefix=None)
+
     # pylint: disable=invalid-name
     @property
     def ENVIRONMENT(self):

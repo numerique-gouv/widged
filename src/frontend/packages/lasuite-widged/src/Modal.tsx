@@ -9,8 +9,6 @@ const Overlay = styled.div`
   bottom: 0;
   left: 0;
   background-color: #0c1a2b99;
-  //opacity: 0;
-  //animation: backdrop-fade-in 0.2s ease-out forwards;
 `;
 
 const Content = styled.div`

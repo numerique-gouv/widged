@@ -55,6 +55,16 @@ width=400,height=900,left=100,top=100`;
     setupBroadcastChannel();
   }, []);
 
+  const getParams = () => {
+    const url = new URL(window.location.href);
+    const params = url.searchParams.get('params');
+    if (!params) {
+      return {};
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return JSON.parse(params) ?? {};
+  };
+
   return (
     <IconContext.Provider
       value={{
@@ -71,7 +81,7 @@ width=400,height=900,left=100,top=100`;
         )}
         {user && (
           <>
-            <Explorer />
+            <Explorer {...getParams()} />
           </>
         )}
       </AppContext.Provider>

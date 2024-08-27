@@ -28,19 +28,11 @@ type ExplorerRow = Row & {
 };
 
 export const ExplorerContent = ({ targetUuid }: { targetUuid: string }) => {
-  const { navigate, setAncestors, selectFile, unselectFile } =
+  const { navigate, setAncestors, selectFile, unselectFile, selectedFiles } =
     useExplorerContext();
   const { fetchApi } = useApi();
   const [selectedRows, setSelectedRows] = useState<RowSelectionState>({});
   const [isLoading, setIsLoading] = useState(true);
-
-  let selectedRowsCount = 0;
-  for (const key in selectedRows) {
-    if (selectedRows[key]) {
-      selectedRowsCount++;
-    }
-  }
-
   const [rows, setRows] = useState<ExplorerRow[]>([]);
 
   const getSelectedFilesDiff = (newSelectedRows: RowSelectionState) => {
@@ -107,6 +99,16 @@ export const ExplorerContent = ({ targetUuid }: { targetUuid: string }) => {
 
       setRows(rows);
       setIsLoading(false);
+
+      // Make selected rows already selected.
+      const selectedRowsTmp: RowSelectionState = {};
+      selectedFiles.forEach((file) => {
+        const row = rows.find((row) => row.id === file.uuid);
+        if (row) {
+          selectedRowsTmp[row.id] = true;
+        }
+      });
+      setSelectedRows(selectedRowsTmp);
     };
 
     void wrapper();
@@ -168,12 +170,11 @@ export const ExplorerContent = ({ targetUuid }: { targetUuid: string }) => {
       enableRowSelection={(row) => row.original.type === ExplorerRowType.FILE}
       rowSelection={selectedRows}
       onRowSelectionChange={(newSelectedRows) => {
-        // console.log('onRowSelectionChange', 'selectedRows', selectedRows);
+        console.log('onRowSelectionChange', 'selectedRows', newSelectedRows);
         setSelectedRows(newSelectedRows);
 
-        // console.log(getSelectedFilesDiff(newSelectedRows));
         const diff = getSelectedFilesDiff(newSelectedRows);
-        // console.log('diff', diff);
+        console.log('diff', diff);
         diff.added.forEach((added) => {
           selectFile(added);
         });

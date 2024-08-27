@@ -18,6 +18,7 @@ interface ExplorerContextInterface {
   selectedFiles: File[];
   selectFile: (file: File) => void;
   unselectFile: (file: File) => void;
+  props: ExplorerProps;
 }
 
 const ExplorerContext = React.createContext<ExplorerContextInterface>(
@@ -51,7 +52,11 @@ function isSameView(a: ExplorerView, b: ExplorerView) {
   );
 }
 
-export const Explorer = () => {
+export interface ExplorerProps {
+  maxFiles?: number;
+}
+
+export const Explorer = (props: ExplorerProps) => {
   const [view, setView] = useState<ExplorerView>({
     mode: ExplorerMode.WORKSPACES,
   });
@@ -118,11 +123,12 @@ export const Explorer = () => {
     },
     selectedFiles,
     selectFile: (file) => {
-      setSelectedFiles([...selectedFiles, file]);
+      setSelectedFiles((value) => [...value, file]);
     },
     unselectFile: (file) => {
-      setSelectedFiles(selectedFiles.filter((f) => f.uuid !== file.uuid));
+      setSelectedFiles((value) => value.filter((f) => f.uuid !== file.uuid));
     },
+    props,
   };
   console.log('selectedFiles', selectedFiles);
   // console.log('view', view);
@@ -178,27 +184,49 @@ export const Explorer = () => {
 };
 
 const ExplorerFooter = () => {
-  const { selectedFiles } = useExplorerContext();
+  const { selectedFiles, props } = useExplorerContext();
   const { client } = useContext(AppContext);
 
   const choose = () => {
-    console.log('selectedFiles', selectedFiles);
-
     client.post(ClientMessageType.SELECTION, {
       files: selectedFiles,
     });
   };
 
+  const isValid = () => {
+    if (props.maxFiles === undefined) {
+      return true;
+    }
+    return selectedFiles.length <= props.maxFiles;
+  };
+
+  const canSubmit = () => {
+    return selectedFiles.length > 0 && isValid();
+  };
+
+  const cancel = () => {
+    client.post(ClientMessageType.CANCEL);
+  };
+
   return (
     <div className="suite__explorer__footer">
-      {selectedFiles.length > 0 ? (
-        <p>{selectedFiles.length} documents sélectionnés</p>
-      ) : (
-        <p>Aucun document selectionné</p>
-      )}
+      <div>
+        {selectedFiles.length > 0 ? (
+          <div>{selectedFiles.length} documents sélectionnés</div>
+        ) : (
+          <div className="clr-greyscale-800">Aucun document selectionné</div>
+        )}
+        {!isValid() && (
+          <div className="clr-danger-500 fs-t">
+            Vous ne pouvez pas sélectionner plus de {props.maxFiles} documents
+          </div>
+        )}
+      </div>
       <div className="suite__explorer__footer__actions">
-        <Button color="secondary">Annuler</Button>
-        <Button color="primary" onClick={choose}>
+        <Button color="secondary" onClick={cancel}>
+          Annuler
+        </Button>
+        <Button color="primary" disabled={!canSubmit()} onClick={choose}>
           Confirmer
         </Button>
       </div>

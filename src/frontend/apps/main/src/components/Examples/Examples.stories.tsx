@@ -120,7 +120,13 @@ export const Application = () => {
       </div>
       <Checkbox label="Agree to the terms and services" fullWidth={true} />
       <Button fullWidth={true}>Apply</Button>
+      <Button fullWidth={true} disabled={true}>
+        Apply
+      </Button>
       <Button fullWidth={true} color="secondary">
+        Later
+      </Button>
+      <Button fullWidth={true} color="secondary" disabled={true}>
         Later
       </Button>
       <a
