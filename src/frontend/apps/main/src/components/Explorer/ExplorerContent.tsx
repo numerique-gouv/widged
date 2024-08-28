@@ -1,5 +1,6 @@
 import { Row, SimpleDataGrid } from '@openfun/cunningham-react';
 import { RowSelectionState } from '@tanstack/react-table';
+import { useRouter } from 'next/navigation';
 import prettyBytes from 'pretty-bytes';
 import React, { useContext, useEffect, useState } from 'react';
 
@@ -34,6 +35,7 @@ export const ExplorerContent = ({ targetUuid }: { targetUuid: string }) => {
   const [selectedRows, setSelectedRows] = useState<RowSelectionState>({});
   const [isLoading, setIsLoading] = useState(true);
   const [rows, setRows] = useState<ExplorerRow[]>([]);
+  const router = useRouter();
 
   const getSelectedFilesDiff = (newSelectedRows: RowSelectionState) => {
     const newSelectedFiles = Object.entries(newSelectedRows).filter(
@@ -127,13 +129,14 @@ export const ExplorerContent = ({ targetUuid }: { targetUuid: string }) => {
             return (
               <div
                 className="suite__explorer__folder"
-                onClick={() =>
-                  navigate({
-                    mode: ExplorerMode.FOLDERS_FILES,
-                    targetUuid: params.row.id,
-                    folder: params.row.folder,
-                  })
-                }
+                onClick={() => {
+                  // navigate({
+                  //   mode: ExplorerMode.FOLDERS_FILES,
+                  //   targetUuid: params.row.id,
+                  //   folder: params.row.folder,
+                  // })
+                  router.push(`/explorer/${params.row.id}`);
+                }}
               >
                 {params.row.type === ExplorerRowType.FOLDER && (
                   <span className="material-icons">folder</span>

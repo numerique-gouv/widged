@@ -1,16 +1,19 @@
 import { Input } from '@openfun/cunningham-react';
-import React, { useContext, useState } from 'react';
+import React, { PropsWithChildren, useContext, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
+import { ClientMessageType } from '@/app/explorer/WidgedReverseClient';
+import { AppContext } from '@/app/explorer/layout';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { Button } from '@/components/Button/Button';
 import { ExplorerContent } from '@/components/Explorer/ExplorerContent';
 import { ExplorerWorkspaces } from '@/components/Explorer/ExplorerWorkspaces';
+import { SearchBar } from '@/components/SearchBar/SearchBar';
 import { File, Folder, Workspace } from '@/types/data';
 
 import './Explorer.scss';
 
-import { ClientMessageType } from '@/app/explorer/WidgedReverseClient';
-import { AppContext } from '@/app/explorer/page';
+import { useRouter } from 'next/navigation';
 
 interface ExplorerContextInterface {
   navigate: (view: ExplorerView) => void;
@@ -30,6 +33,7 @@ export const useExplorerContext = () => useContext(ExplorerContext);
 export enum ExplorerMode {
   WORKSPACES = 'workspaces',
   FOLDERS_FILES = 'folders_files',
+  SEARCH = 'search',
 }
 
 interface ExplorerView {
@@ -40,7 +44,8 @@ interface ExplorerView {
 }
 
 interface AncestorContext {
-  view: ExplorerView;
+  // view: ExplorerView;
+  href: string;
   name: string;
 }
 
@@ -52,11 +57,12 @@ function isSameView(a: ExplorerView, b: ExplorerView) {
   );
 }
 
-export interface ExplorerProps {
+export interface ExplorerProps extends PropsWithChildren {
   maxFiles?: number;
 }
 
 export const Explorer = (props: ExplorerProps) => {
+  const router = useRouter();
   const [view, setView] = useState<ExplorerView>({
     mode: ExplorerMode.WORKSPACES,
   });
@@ -68,21 +74,15 @@ export const Explorer = (props: ExplorerProps) => {
     const ancestors: AncestorContext[] = [];
     // Add all workspaces.
     ancestors.push({
-      view: {
-        mode: ExplorerMode.WORKSPACES,
-      },
       name: 'Mes espaces',
+      href: '/explorer',
     });
 
     // Add the current workspace.
     if (workspace) {
       ancestors.push({
-        view: {
-          mode: ExplorerMode.FOLDERS_FILES,
-          workspace: workspace,
-          targetUuid: workspace.uuid,
-        },
         name: workspace.name,
+        href: `/explorer/${workspace.uuid}`,
       });
     }
 
@@ -91,11 +91,8 @@ export const Explorer = (props: ExplorerProps) => {
       .filter((ancestor) => ancestor.name !== '')
       .forEach((ancestor) => {
         ancestors.push({
-          view: {
-            mode: ExplorerMode.FOLDERS_FILES,
-            targetUuid: ancestor.uuid,
-          },
           name: ancestor.name,
+          href: `/explorer/${ancestor.uuid}`,
         });
       });
 
@@ -130,9 +127,6 @@ export const Explorer = (props: ExplorerProps) => {
     },
     props,
   };
-  console.log('selectedFiles', selectedFiles);
-  // console.log('view', view);
-  // console.log('views', views);
 
   const breadcrumbs = getBreadcrumbs();
 
@@ -144,13 +138,8 @@ export const Explorer = (props: ExplorerProps) => {
             <span className="material-icons">folder</span>
             <h2 className="clr-greyscale-900">Ajouter un document</h2>
           </div>
-          <div className="suite__explorer__search">
-            <Input
-              label="Rechercher un document"
-              icon={<span className="material-icons">search</span>}
-              fullWidth={true}
-            />
-          </div>
+          <SearchBar />
+
           <Breadcrumbs
             displayBack={false}
             items={[
@@ -159,7 +148,7 @@ export const Explorer = (props: ExplorerProps) => {
                   <Button
                     color="tertiary-text"
                     size="small"
-                    onClick={() => navigate(ancestor.view)}
+                    onClick={() => router.push(ancestor.href)}
                   >
                     {ancestor.name}
                   </Button>
@@ -168,15 +157,7 @@ export const Explorer = (props: ExplorerProps) => {
             ]}
           />
         </div>
-        <div className="suite__explorer__content">
-          {view.mode === ExplorerMode.WORKSPACES && <ExplorerWorkspaces />}
-          {view.mode === ExplorerMode.FOLDERS_FILES && view.targetUuid && (
-            <ExplorerContent
-              targetUuid={view.targetUuid}
-              key={view.targetUuid}
-            />
-          )}
-        </div>
+        <div className="suite__explorer__content">{props.children}</div>
         <ExplorerFooter />
       </div>
     </ExplorerContext.Provider>

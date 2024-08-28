@@ -1,4 +1,5 @@
 import { Row, SimpleDataGrid } from '@openfun/cunningham-react';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import {
@@ -19,6 +20,7 @@ export const ExplorerWorkspaces = () => {
   const { fetchApi } = useApi();
   const [rows, setRows] = useState<WorkspaceRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const wrapper = async () => {
@@ -50,13 +52,14 @@ export const ExplorerWorkspaces = () => {
             return (
               <div
                 className="suite__explorer__folder"
-                onClick={() =>
-                  context.navigate({
-                    mode: ExplorerMode.FOLDERS_FILES,
-                    workspace: params.row.workspace,
-                    targetUuid: params.row.id,
-                  })
-                }
+                onClick={() => {
+                  router.push(`/explorer/${params.row.id}`);
+                  // context.navigate({
+                  //   mode: ExplorerMode.FOLDERS_FILES,
+                  //   workspace: params.row.workspace,
+                  //   targetUuid: params.row.id,
+                  // });
+                }}
               >
                 <WorkspaceIcon workspace={params.row.workspace} />
                 {params.row.name}
