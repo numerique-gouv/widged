@@ -19,6 +19,7 @@ class DummyBackend:
             folder = get_folder_by_uuid(CONTENT, uuid)
 
         ancestors = folder["ancestors"] if "ancestors" in folder else []
+
         folder_data = FolderFactory(folder)
 
         return {
@@ -27,7 +28,38 @@ class DummyBackend:
                                ancestor in ancestors],
         }
 
-    def get_target_explore(self, uuid):
+    def get_search(self, request):
+        terms = request.GET.get("terms")
+        print(terms)
+        folders, files = search(CONTENT, terms)
+        print(folders)
+        print(files)
+
+        folders_data = []
+        for folder in folders:
+            folder_data = FolderFactory(folder)
+            folder_data["parentEntities"] = [{"name": ancestor["name"], "uuid": ancestor["uuid"]} for ancestor in
+                                             folder["ancestors"]]
+            folders_data.append(folder_data)
+
+        files_data = []
+        for file in files:
+            file_data = FileFactory(file["name"])
+            file_data["parentEntities"] = [{"name": ancestor["name"], "uuid": ancestor["uuid"]} for ancestor in
+                                           file["ancestors"]]
+            files_data.append(file_data)
+
+        return {
+            "totalItems": len(folders_data) + len(files_data),
+            "items": {
+                "folders": folders_data,
+                "files": files_data
+            }
+
+        }
+
+    def get_target_explore(self, request, uuid):
+
         if "workspace" in uuid:
             folder = CONTENT
         else:
@@ -50,7 +82,9 @@ class DummyBackend:
             }
         }
 
-def get_folder_by_uuid(root, uuid, ancestors=[]):
+def get_folder_by_uuid(root, uuid, ancestors=None):
+    if ancestors is None:
+        ancestors = []
     if root["uuid"] == uuid:
         root["ancestors"] = ancestors
         return root
@@ -59,3 +93,25 @@ def get_folder_by_uuid(root, uuid, ancestors=[]):
         if result:
             return result
     return None
+
+def search(root, terms, ancestors = None, folders_acc = None, files_acc = None):
+    if ancestors is None:
+        ancestors = []
+    if folders_acc is None:
+        folders_acc = []
+    if files_acc is None:
+        files_acc = []
+
+    root["ancestors"] = ancestors
+    if terms in root["name"]:
+        folders_acc.append(root)
+
+    for file in root["files"]:
+        if terms in file:
+            files_acc.append({"name":file, "ancestors": ancestors})
+
+    if "folders" in root:
+        for folder in root["folders"]:
+            search(folder, terms, ancestors + [root], folders_acc, files_acc)
+
+    return folders_acc, files_acc

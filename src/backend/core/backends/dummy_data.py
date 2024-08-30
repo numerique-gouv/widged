@@ -70,6 +70,7 @@ WORKSPACES = [
 fake = Faker()
 CONTENT = {
     "uuid": "default",
+    "name": "Mon Espace",
     "files": ["Rush séminaire.mp4", "Planning CA.xlsx", "CR Réunion A.docx", "Fiche de poste.pdf", "montagne.jpg"],
     "folders": [
         {
@@ -108,7 +109,7 @@ CONTENT = {
                         {
                             "uuid": "hhh",
                             "name": "Technologie",
-                            "files": [fake.file_name() for _ in range(8)],
+                            "files": ["Python.pdf", "Java.pdf", "C++.pdf", "C#.pdf", "Ruby.pdf", "Javascript.pdf", "HTML.pdf", "CSS.pdf"],
                             "folders": [
                                 {
                                     "uuid": "iii",

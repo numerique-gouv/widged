@@ -13,7 +13,12 @@ class WorkspaceView(APIView):
 class TargetExploreView(APIView):
 
     def get(self, request, uuid):
-        return Response(get_content_backend().get_target_explore(uuid))
+        return Response(get_content_backend().get_target_explore(request, uuid))
+
+class SearchView(APIView):
+
+    def get(self, request):
+        return Response(get_content_backend().get_search(request))
 
 
 class TargetDetailsView(APIView):
