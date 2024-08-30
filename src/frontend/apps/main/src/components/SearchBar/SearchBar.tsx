@@ -12,14 +12,21 @@ export const SearchBar = () => {
   const form = useForm<Form>();
 
   const onSearch = (values: Form) => {
-    const params = new URLSearchParams();
-    params.set('terms', values.terms);
-    router.push('/explorer/search?' + params.toString());
+    if (values.terms) {
+      const params = new URLSearchParams();
+      params.set('terms', values.terms);
+      router.replace('/explorer/search?' + params.toString());
+    } else {
+      router.replace('/explorer');
+    }
   };
 
   return (
     <div className="suite__explorer__search">
-      <form onSubmit={form.handleSubmit(onSearch)}>
+      <form
+        onSubmit={form.handleSubmit(onSearch)}
+        onBlur={form.handleSubmit(onSearch)}
+      >
         <Input
           label="Rechercher un document"
           icon={<span className="material-icons">search</span>}

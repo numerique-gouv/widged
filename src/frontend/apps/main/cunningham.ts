@@ -21,17 +21,6 @@ const config = {
             black: 900,
           },
         },
-        spacings: {
-          '0': '0',
-          none: '0',
-          auto: 'auto',
-          bx: '2.2rem',
-          full: '100%',
-        },
-        breakpoints: {
-          xxs: '320px',
-          xs: '480px',
-        },
       },
     },
     dsfr: {
