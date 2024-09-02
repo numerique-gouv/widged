@@ -15,9 +15,12 @@ import './page.scss';
 
 import { useExplorerContext } from '@/components/Explorer/Explorer';
 
+import { useTranslation } from 'react-i18next';
+
 export default function Search() {
   const { fetchApi } = useApi();
   const { setCrumbs } = useExplorerContext();
+  const { t } = useTranslation();
   const params = useSearchParams();
   const terms = params.get('terms');
   const [isLoading, setIsLoading] = useState(true);
@@ -62,7 +65,7 @@ export default function Search() {
       setCount(data.totalItems);
       setCrumbs([
         {
-          name: 'Recherche',
+          name: t('Recherche'),
           href: window.location.pathname + window.location.search,
         },
       ]);
@@ -73,7 +76,9 @@ export default function Search() {
     <>
       {!isLoading && (
         <div className="suite__explore__search__results fw-medium fs-m">
-          {count} résultats trouvés
+          {t('explorer.search.results', {
+            count: count,
+          })}
         </div>
       )}
       <ExplorerContentGrid isLoading={isLoading} rows={rows} />

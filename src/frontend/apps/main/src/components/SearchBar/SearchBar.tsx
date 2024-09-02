@@ -2,6 +2,7 @@ import { Input } from '@openfun/cunningham-react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 interface Form {
   terms: string;
@@ -9,6 +10,7 @@ interface Form {
 
 export const SearchBar = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const form = useForm<Form>();
 
   const onSearch = (values: Form) => {
@@ -28,7 +30,7 @@ export const SearchBar = () => {
         onBlur={form.handleSubmit(onSearch)}
       >
         <Input
-          label="Rechercher un document"
+          label={t('Rechercher un document')}
           icon={<span className="material-icons">search</span>}
           fullWidth={true}
           {...form.register('terms')}

@@ -3,6 +3,7 @@ import { RowSelectionState } from '@tanstack/react-table';
 import { useRouter } from 'next/navigation';
 import prettyBytes from 'pretty-bytes';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useExplorerContext } from '@/components/Explorer/Explorer';
 import { FileIcon } from '@/components/FileIcon/FileIcon';
@@ -31,6 +32,7 @@ export const ExplorerContentGrid = ({ isLoading, rows }: Props) => {
   const router = useRouter();
   const { selectedFiles, selectFile, unselectFile } = useExplorerContext();
   const [selectedRows, setSelectedRows] = useState<RowSelectionState>({});
+  const { t } = useTranslation();
 
   const getSelectedFilesDiff = (newSelectedRows: RowSelectionState) => {
     const newSelectedFiles = Object.entries(newSelectedRows).filter(
@@ -74,7 +76,7 @@ export const ExplorerContentGrid = ({ isLoading, rows }: Props) => {
       isLoading={isLoading}
       columns={[
         {
-          headerName: 'Nom',
+          headerName: t('Nom'),
           field: 'name',
           renderCell: (params) => {
             return (
@@ -97,18 +99,18 @@ export const ExplorerContentGrid = ({ isLoading, rows }: Props) => {
           },
         },
         {
-          headerName: 'Dernière modification',
+          headerName: t('Dernière modification'),
           field: 'editedAt',
           renderCell: (params) => {
             return params.row.editedAt.toLocaleString();
           },
         },
         {
-          headerName: 'Auteur',
+          headerName: t('Auteur'),
           field: 'author',
         },
         {
-          headerName: 'Taille',
+          headerName: t('Taille'),
           field: 'size',
           renderCell: (params) => {
             return params.row.size ? prettyBytes(params.row.size) : '-';

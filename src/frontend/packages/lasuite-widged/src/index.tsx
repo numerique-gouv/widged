@@ -5,6 +5,9 @@ import { FileExplorer, FileExplorerProps } from '@/FileExplorer';
 import { ConfigType } from '@/Types';
 import '@/index.scss';
 
+// eslint-disable-next-line react-refresh/only-export-components
+export * from '@/Types';
+
 export class WidgedClient {
   config: ConfigType;
 

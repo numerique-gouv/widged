@@ -48,7 +48,9 @@ export const ExplorerFooter = () => {
         )}
         {!isValid() && (
           <div className="clr-danger-500 fs-t">
-            Vous ne pouvez pas sélectionner plus de {props.maxFiles} documents
+            {t('explorer.footer.selected_items_max', {
+              count: props.maxFiles,
+            })}
           </div>
         )}
       </div>

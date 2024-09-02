@@ -7,7 +7,11 @@
   "fr": {
     "translation": {
       "explorer.footer.selected_items_one": "{{count}} document sélectionné",
-      "explorer.footer.selected_items_other": "{{count}} documents sélectionnés"
+      "explorer.footer.selected_items_other": "{{count}} documents sélectionnés",
+      "explorer.footer.selected_items_max_one": "Vous ne pouvez pas sélectionner plus d'un seul document",
+      "explorer.footer.selected_items_max_other": "Vous ne pouvez pas sélectionner plus de {{count}} documents",
+      "explorer.search.results_one": "Un seul résultat trouvé",
+      "explorer.search.results_other": "{{count}} résultats trouvés"
     }
   }
 }

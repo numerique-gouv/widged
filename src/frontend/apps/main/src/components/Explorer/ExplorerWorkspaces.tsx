@@ -1,6 +1,7 @@
 import { Row, SimpleDataGrid } from '@openfun/cunningham-react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useExplorerContext } from '@/components/Explorer/Explorer';
 import { WorkspaceIcon } from '@/components/WorkspaceIcon/WorkspaceIcon';
@@ -14,6 +15,7 @@ type WorkspaceRow = Row & {
 
 export const ExplorerWorkspaces = () => {
   const { fetchApi } = useApi();
+  const { t } = useTranslation();
   const [rows, setRows] = useState<WorkspaceRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -42,7 +44,7 @@ export const ExplorerWorkspaces = () => {
       isLoading={isLoading}
       columns={[
         {
-          headerName: 'Nom',
+          headerName: t('Nom'),
           field: 'name',
           renderCell: (params) => {
             return (
