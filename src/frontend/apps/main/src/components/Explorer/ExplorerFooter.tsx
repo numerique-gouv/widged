@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ClientMessageType } from '@/app/explorer/WidgedReverseClient';
 import { AppContext } from '@/app/explorer/layout';
 import { Button } from '@/components/Button/Button';
+import { ClientMessageType } from '@/components/Client/WidgedReverseClient';
 import { useExplorerContext } from '@/components/Explorer/Explorer';
 
 export const ExplorerFooter = () => {

@@ -3,7 +3,7 @@
 import { IconContext } from '@phosphor-icons/react';
 import { PropsWithChildren, createContext, useEffect } from 'react';
 
-import { WidgedReverseClient } from '@/app/explorer/WidgedReverseClient';
+import { WidgedReverseClient } from '@/components/Client/WidgedReverseClient';
 import { Explorer } from '@/components/Explorer/Explorer';
 import { Auth, useAuth } from '@/core/auth/Auth';
 import { baseApiUrl } from '@/core/conf';
