@@ -4,16 +4,14 @@
   "private": true,
   "scripts": {
     "lint": "eslint . --ext .ts",
-    "install": "playwright install --with-deps",
-    "test": "playwright test",
-    "test:ui": "yarn test --ui"
+    "install": "playwright install --with-deps"
   },
   "devDependencies": {
     "@playwright/test": "1.44.1",
-    "@types/node": "*",
+    "@types/node": "20.14.2",
     "@types/pdf-parse": "1.1.4",
     "eslint-config": "*",
-    "typescript": "*"
+    "typescript": "5.2.2"
   },
   "dependencies": {
     "convert-stream": "1.0.2",

@@ -7,6 +7,12 @@ from rest_framework.routers import DefaultRouter
 
 from core.api import viewsets
 from core.api.views.dev import dev_view
+from core.api.views.explore import (
+    SearchView,
+    TargetDetailsView,
+    TargetExploreView,
+    WorkspaceView,
+)
 from core.api.views.spoof import spoof_view
 from core.authentication.urls import urlpatterns as oidc_urls
 from core.authentication.views import OIDCLogoutCallbackView
@@ -22,6 +28,10 @@ urlpatterns = [
             [
                 *router.urls,
                 *oidc_urls,
+                path("workspaces/", WorkspaceView.as_view()),
+                path("targets/<str:uuid>/explore/", TargetExploreView.as_view()),
+                path("targets/<str:uuid>/details/", TargetDetailsView.as_view()),
+                path("search/", SearchView.as_view()),
             ]
         ),
     ),

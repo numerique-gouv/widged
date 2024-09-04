@@ -53,6 +53,7 @@ class BaseModel(models.Model):
         self.full_clean()
         super().save(*args, **kwargs)
 
+
 class User(AbstractBaseUser, BaseModel, auth_models.PermissionsMixin):
     """User model to work with OIDC only authentication."""
 

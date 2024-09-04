@@ -1,82 +1,46 @@
 'use client';
 
-import './page.scss';
+import { Loader } from '@openfun/cunningham-react';
+import { useEffect } from 'react';
 
 import { Auth, useAuth } from '@/core/auth/Auth';
 
-import { useEffect } from 'react';
-
-/**
- * TODO: Use API Key.
- */
-const getAllowTargetOrigin = () => {
-  return 'http://localhost:3010/consumer/';
-};
-
-const post = (type: string, data: any) => {
-  (window.opener as Window).postMessage(
-    {
-      type,
-      data,
-    },
-    getAllowTargetOrigin(),
-  );
-};
+import './page.scss';
 
 export default function Home() {
   return (
-    <Auth redirect={true}>
+    <Auth>
       <Nested />
     </Auth>
   );
 }
 
 const Nested = () => {
-  const files = ['compte-rendu.pdf', 'schema-api.pdf'];
   const { user } = useAuth();
 
-  console.log('window.opener', window.opener);
-
-  // if (!window.opener) {
-  //   return <div>This widget must be opened in a popup</div>;
-  // }
-
-  // Only enable for iframe mode POC.
   useEffect(() => {
-    // if (user) {
-    //   console.log('CLOSE');
-    //   window.close();
-    // }
+    if (!user) {
+      return;
+    }
 
     const bc = new BroadcastChannel('APP_CHANNEL');
     bc.postMessage({ type: 'AUTHENTICATED' });
 
+    /**
+     * This means the parent window has authenticated has successfully refetched user, then we can close the popup.
+     */
     bc.onmessage = (event) => {
+      console.log('message', event.data);
       if (event.data.type === 'AUTHENTICATED_ACK') {
-        /**
-         * This means the parent has authenticated has successfully refetched user via /me.
-         */
+        console.log('CLOSE WINDOW');
         window.close();
       }
     };
   }, [user]);
 
-  const choose = (file: string) => {
-    post('FILE_SELECTED', { file: { name: file } });
-  };
-
   return (
-    <Auth redirect={true}>
-      <div className="container container--center">
-        <p>Hello {user?.email}</p>
-        <ul>
-          {files.map((file) => (
-            <li key={file}>
-              <button onClick={() => choose(file)}>Choose {file}</button>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </Auth>
+    <div>
+      <Loader />
+    </div>
   );
 };

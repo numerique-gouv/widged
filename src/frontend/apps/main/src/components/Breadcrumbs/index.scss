@@ -1,0 +1,9 @@
+.c__breadcrumbs {
+  display: flex;
+  align-items: center;
+  overflow: auto;
+
+  > * {
+    flex-shrink: 0;
+  }
+}
