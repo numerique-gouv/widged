@@ -1,0 +1,64 @@
+.suite__explorer {
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 24px;
+    //position: sticky;
+    top: 0;
+
+    h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+  }
+
+  &__search {
+    padding: 16px 24px;
+    width: 420px;
+  }
+
+  &__content {
+    /* It allows to avoid having items hidden behind footer by providing scroll space */
+    padding-bottom: 96px;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    position: fixed;
+    top: calc(100vh);
+    transform: translateY(-100%);
+    left: 0;
+    right: 0;
+    border-top: 1px var(--c--theme--colors--greyscale-300) solid;
+    background-color: white;
+
+    &__actions {
+      display: flex;
+      gap: 12px;
+    }
+  }
+
+  .c__breadcrumbs {
+    padding: 0 0 0 12px;
+    margin-bottom: 4px;
+  }
+
+  .c__datagrid__table__container > table {
+    th:first-child,
+    td:first-child {
+      padding-left: 24px;
+    }
+  }
+}
+
+.suite__explorer__folder {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 16px;
+}

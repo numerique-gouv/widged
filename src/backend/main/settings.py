@@ -213,7 +213,6 @@ class Base(Configuration):
         "django.contrib.auth.middleware.AuthenticationMiddleware",
         "django.contrib.messages.middleware.MessageMiddleware",
         "dockerflow.django.middleware.DockerflowMiddleware",
-        "debug_toolbar.middleware.DebugToolbarMiddleware",
     ]
 
     AUTHENTICATION_BACKENDS = [
@@ -245,7 +244,6 @@ class Base(Configuration):
         "django.contrib.staticfiles",
         # OIDC third party
         "mozilla_django_oidc",
-        "debug_toolbar",
     ]
 
     # Cache
@@ -396,6 +394,8 @@ class Base(Configuration):
         "SHOW_TOOLBAR_CALLBACK": lambda request: True,
     }
 
+    CONTENT_BACKEND = values.Value(environ_name="CONTENT_BACKEND", environ_prefix=None)
+
     # pylint: disable=invalid-name
     @property
     def ENVIRONMENT(self):
@@ -488,7 +488,12 @@ class Development(Base):
 
     def __init__(self):
         # pylint: disable=invalid-name
-        self.INSTALLED_APPS += ["django_extensions", "drf_spectacular_sidecar"]
+        self.MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+        self.INSTALLED_APPS += [
+            "django_extensions",
+            "drf_spectacular_sidecar",
+            "debug_toolbar",
+        ]
 
 
 class Test(Base):

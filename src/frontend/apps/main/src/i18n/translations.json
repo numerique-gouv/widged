@@ -1,16 +1,15 @@
 {
   "en": {
-    "translation": {
-      "api_errors.generic_api_error": "An error occurred, please try again later",
-      "api_errors.WorkspaceNotFound": "Workspace not found"
-    }
+    "translation": {}
   },
   "fr": {
     "translation": {
-      "My account": "Mon compte",
-      "api_errors.WorkspaceAlreadyExporting": "Une communauté est déjà en cours d'export",
-      "api_errors.generic_api_error": "Une erreur a eu lieu, réessayez dans quelques instants",
-      "api_errors.WorkspaceNotFound": "Communauté non trouvée"
+      "explorer.footer.selected_items_one": "{{count}} document sélectionné",
+      "explorer.footer.selected_items_other": "{{count}} documents sélectionnés",
+      "explorer.footer.selected_items_max_one": "Vous ne pouvez pas sélectionner plus d'un seul document",
+      "explorer.footer.selected_items_max_other": "Vous ne pouvez pas sélectionner plus de {{count}} documents",
+      "explorer.search.results_one": "Un seul résultat trouvé",
+      "explorer.search.results_other": "{{count}} résultats trouvés"
     }
   }
 }

@@ -3,13 +3,14 @@ import { initReactI18next } from 'react-i18next';
 
 import { LANGUAGES_ALLOWED, LANGUAGE_LOCAL_STORAGE } from './conf';
 import resources from './translations.json';
-import { getLanguage } from './utils';
 
 i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: getLanguage(),
+    // lng: getLanguage(),
+    // lng: 'en',
+    lng: 'fr',
     interpolation: {
       escapeValue: false,
     },
