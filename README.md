@@ -1,82 +1,75 @@
-# Osmose Migrator
+<div align="center">
+
+# 🗂️ Widged SDK
 
 🏗️ Work in progress ...
 
-## Getting started
+**Easily open a widget to browse user files on any of your project**
 
-### Prerequisite
+<img src="./assets/workspaces.png" alt="" />
 
-Make sure you have a recent version of Docker and [Docker
-Compose](https://docs.docker.com/compose/install) installed on your laptop:
+**As simple as**
+</div>
 
-```bash
-$ docker -v
-  Docker version 20.10.2, build 2291f61
-
-$ docker compose -v
-  docker compose version 1.27.4, build 40524192
+```ts
+const client = new WidgedClient();
+client.pickFile({
+  maxFiles: 3,
+  onSelection: (files) => {
+    console.log('Selected files', files);
+  },
+});
 ```
 
-> ⚠️ You may need to run the following commands with `sudo` but this can be
-> avoided by assigning your user to the `docker` group.
 
-### Project bootstrap
 
-The easiest way to start working on the project is to use GNU Make:
 
-```bash
-$ make bootstrap FLUSH_ARGS='--no-input'
-```
 
-Then you can access to the project in development mode by going to http://localhost:3000.
-You will be prompted to log in, the default credentials are:
-```bash
-username: impress
-password: impress
-```
----
 
-This command builds the `app` container, installs dependencies, performs
-database migrations and compile translations. It's a good idea to use this
-command each time you are pulling code from the project repository to avoid
-dependency-releated or migration-releated issues.
+## Use case
 
-Your Docker services should now be up and running 🎉
+This project aims to provide a simple way to open a widget to browse user files on any of your project. It is first intented
+to be used to browse [Resana](https://resana.numerique.gouv.fr/) files but can be easily extended to support other services.
 
-Note that if you need to run them afterwards, you can use the eponym Make rule:
+Let's say you are an authorized service provider and you want to allow your user to import their personnal
+files from Resana. You can use this SDK to open a widget that will allow your user to browse their files and select the ones they want to import.
 
-```bash
-$ make run-frontend-dev
-```
 
-### Adding content
 
-You can create a basic demo site by running:
 
-    $ make demo
+## ✨Features
 
-Finally, you can check all available Make rules using:
+<div align="center">
 
-```bash
-$ make help
-```
+### 👥 Browse your workspaces
 
-### Django admin
+<img src="./assets/workspaces.png" alt="" />
 
-You can access the Django admin site at
-[http://localhost:8071/admin](http://localhost:8071/admin).
+</div>
 
-You first need to create a superuser account:
+<div align="center">
 
-```bash
-$ make superuser
-```
+### 🗂️ Browse your folders
+
+<img src="./assets/folder.png" alt="" />
+
+</div>
+
+<div align="center">
+
+### 🔎 Search
+
+<img src="./assets/search.png" alt="" />
+
+</div>
 
 ## Contributing
 
 This project is intended to be community-driven, so please, do not hesitate to
 get in touch if you have any question related to our implementation or design
 decisions.
+
+🏗️ Work in progress ...
 
 ## License
 
