@@ -105,6 +105,12 @@ run: ## start the wsgi (production) and development server
 	@$(WAIT_DB)
 .PHONY: run
 
+run-production: ## start the wsgi (production) and development server
+	@$(COMPOSE) up --force-recreate -d app
+	@echo "Wait for postgresql to be up..."
+	@$(WAIT_DB)
+.PHONY: run-production
+
 status: ## an alias for "docker compose ps"
 	@$(COMPOSE) ps
 .PHONY: status

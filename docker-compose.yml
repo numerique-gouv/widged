@@ -35,7 +35,6 @@ services:
     depends_on:
         - postgresql
         - redis
-        - nginx
 
   app:
     build:
