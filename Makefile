@@ -100,7 +100,7 @@ logs: ## display app-dev logs (follow mode)
 .PHONY: logs
 
 run: ## start the wsgi (production) and development server
-	@$(COMPOSE) up --force-recreate -d celery-dev
+	@$(COMPOSE) up --force-recreate -d app-dev
 	@echo "Wait for postgresql to be up..."
 	@$(WAIT_DB)
 .PHONY: run
@@ -114,31 +114,6 @@ stop: ## stop the development server using Docker
 .PHONY: stop
 
 # -- Backend
-
-
-run-celery-dev:
-	@$(COMPOSE) up --force-recreate -d celery-dev
-.PHONY: run-celery-dev
-
-run-celery-dev-follow:
-	@$(COMPOSE) up --force-recreate -d celery-dev
-	@$(COMPOSE) logs -f celery-dev
-.PHONY: run-celery-dev
-
-brun-celery-flower:
-	@$(COMPOSE) up --build -d celery-flower
-	@$(COMPOSE) logs -f celery-flower
-.PHONY: run-celery-flower
-
-run-celery-flower:
-	@$(COMPOSE) up --force-recreate -d celery-flower
-	@$(COMPOSE) logs -f celery-flower
-.PHONY: run-celery-flower
-
-stop-celery-flower:
-	@$(COMPOSE) stop celery-flower
-.PHONY: run-celery-flower
-
 demo: ## flush db then create a demo for load testing purpose
 	@$(MAKE) resetdb
 	@$(MANAGE) create_demo

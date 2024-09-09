@@ -1,5 +1,3 @@
-# Django impress
-
 # ---- base image to inherit from ----
 FROM python:3.10-slim-bullseye as base
 
@@ -126,18 +124,6 @@ ENV DB_HOST=postgresql \
 
 # Run django development server
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-
-
-# ---- Flower image ----
-FROM backend-development as celery-flower
-
-# Switch back to the root user to install development dependencies
-USER root:root
-
-RUN pip install flower
-
-# Run django development server
-CMD ["celery", "-A", "main.celery_app", "flower"]
 
 # ---- Production image ----
 FROM core as backend-production
