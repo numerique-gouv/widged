@@ -1,7 +1,10 @@
 {
-  "name": "lasuite-widged",
-  "private": true,
-  "version": "0.0.0",
+  "name": "@gouvfr-lasuite/widged-sdk",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "0.0.2",
   "type": "module",
   "main": "./dist/lasuite-widged.umd.cjs",
   "module": "./dist/lasuite-widged.js",
