@@ -37,7 +37,7 @@ export const ExplorerContent = ({ targetUuid }: { targetUuid: string }) => {
           .map((ancestor) => {
             return {
               name: ancestor.name,
-              href: `/explorer/folders/${ancestor.uuid}`,
+              href: `/explorer/folders?uuid=${ancestor.uuid}`,
             };
           }),
       );

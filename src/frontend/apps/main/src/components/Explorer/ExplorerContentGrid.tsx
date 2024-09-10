@@ -84,7 +84,7 @@ export const ExplorerContentGrid = ({ isLoading, rows }: Props) => {
               <div
                 className="suite__explorer__folder"
                 onClick={() => {
-                  router.push(`/explorer/folders/${params.row.id}`);
+                  router.push(`/explorer/folders?uuid=${params.row.id}`);
                 }}
               >
                 {params.row.type === ExplorerRowType.FOLDER && (

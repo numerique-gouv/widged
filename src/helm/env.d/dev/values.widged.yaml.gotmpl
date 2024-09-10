@@ -1,16 +1,15 @@
 image:
-  repository: localhost:5001/impress-backend
+  repository: localhost:5001/widged-backend
   pullPolicy: Always
   tag: "latest"
 
 backend:
   replicas: 1
   envVars:
-    DJANGO_CSRF_TRUSTED_ORIGINS: https://impress.127.0.0.1.nip.io,http://impress.127.0.0.1.nip.io
+    DJANGO_CSRF_TRUSTED_ORIGINS: https://widged.127.0.0.1.nip.io,http://widged.127.0.0.1.nip.io
     DJANGO_CONFIGURATION: Production
     DJANGO_ALLOWED_HOSTS: "*"
     DJANGO_SECRET_KEY: {{ .Values.djangoSecretKey }}
-    DJANGO_SETTINGS_MODULE: impress.settings
     DJANGO_SUPERUSER_PASSWORD: admin
     DJANGO_EMAIL_HOST: "mailcatcher"
     DJANGO_EMAIL_PORT: 1025
@@ -24,24 +23,24 @@ backend:
     OIDC_RP_CLIENT_SECRET: {{ .Values.oidc.clientSecret }}
     OIDC_RP_SIGN_ALGO: RS256
     OIDC_RP_SCOPES: "openid email"
-    OIDC_REDIRECT_ALLOWED_HOSTS: https://impress.127.0.0.1.nip.io
+    OIDC_REDIRECT_ALLOWED_HOSTS: https://widged.127.0.0.1.nip.io
     OIDC_AUTH_REQUEST_EXTRA_PARAMS: "{'acr_values': 'eidas1'}"
-    LOGIN_REDIRECT_URL: https://impress.127.0.0.1.nip.io
-    LOGIN_REDIRECT_URL_FAILURE: https://impress.127.0.0.1.nip.io
-    LOGOUT_REDIRECT_URL: https://impress.127.0.0.1.nip.io
+    LOGIN_REDIRECT_URL: https://widged.127.0.0.1.nip.io
+    LOGIN_REDIRECT_URL_FAILURE: https://widged.127.0.0.1.nip.io
+    LOGOUT_REDIRECT_URL: https://widged.127.0.0.1.nip.io
     DB_HOST: postgres-postgresql
-    DB_NAME: impress
+    DB_NAME: widged
     DB_USER: dinum
     DB_PASSWORD: pass
     DB_PORT: 5432
-    POSTGRES_DB: impress
+    POSTGRES_DB: widged
     POSTGRES_USER: dinum
     POSTGRES_PASSWORD: pass
     REDIS_URL: redis://default:pass@redis-master:6379/1
-    AWS_S3_ENDPOINT_URL: http://minio.impress.svc.cluster.local:9000
-    AWS_S3_ACCESS_KEY_ID: impress
+    AWS_S3_ENDPOINT_URL: http://minio.widged.svc.cluster.local:9000
+    AWS_S3_ACCESS_KEY_ID: widged
     AWS_S3_SECRET_ACCESS_KEY: password
-    AWS_STORAGE_BUCKET_NAME: impress-media-storage
+    AWS_STORAGE_BUCKET_NAME: widged-media-storage
     STORAGES_STATICFILES_BACKEND: django.contrib.staticfiles.storage.StaticFilesStorage
 
   migrate:
@@ -56,8 +55,8 @@ backend:
   command:
     - "gunicorn"
     - "-c"
-    - "/usr/local/etc/gunicorn/impress.py"
-    - "impress.wsgi:application"
+    - "/usr/local/etc/gunicorn/main.py"
+    - "main.wsgi:application"
     - "--reload"
 
   createsuperuser:
@@ -71,8 +70,8 @@ backend:
 frontend:
   envVars:
     PORT: 8080
-    NEXT_PUBLIC_API_ORIGIN: https://impress.127.0.0.1.nip.io
-    NEXT_PUBLIC_SIGNALING_URL: wss://impress.127.0.0.1.nip.io/ws
+    NEXT_PUBLIC_API_ORIGIN: https://widged.127.0.0.1.nip.io
+    NEXT_PUBLIC_SIGNALING_URL: wss://widged.127.0.0.1.nip.io/ws
 
   replicas: 1
   command:
@@ -80,7 +79,7 @@ frontend:
     - dev
 
   image:
-    repository: localhost:5001/impress-frontend
+    repository: localhost:5001/widged-frontend
     pullPolicy: Always
     tag: "latest"
 
@@ -88,18 +87,18 @@ webrtc:
   replicas: 1
 
   image:
-    repository: localhost:5001/impress-y-webrtc-signaling
+    repository: localhost:5001/widged-y-webrtc-signaling
     pullPolicy: Always
     tag: "latest"
 
 ingress:
   enabled: true
-  host: impress.127.0.0.1.nip.io
+  host: widged.127.0.0.1.nip.io
 
 ingressWS:
   enabled: true
-  host: impress.127.0.0.1.nip.io
+  host: widged.127.0.0.1.nip.io
 
 ingressAdmin:
   enabled: true
-  host: impress.127.0.0.1.nip.io
+  host: widged.127.0.0.1.nip.io

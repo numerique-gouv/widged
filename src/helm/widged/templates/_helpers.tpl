@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "impress.name" -}}
+{{- define "name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "impress.fullname" -}}
+{{- define "fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "impress.chart" -}}
+{{- define "chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
-impress.labels
+labels
 */}}
-{{- define "impress.labels" -}}
-helm.sh/chart: {{ include "impress.chart" . }}
-{{ include "impress.selectorLabels" . }}
+{{- define "labels" -}}
+helm.sh/chart: {{ include "chart" . }}
+{{ include "selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,14 +45,14 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "impress.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "impress.name" . }}
+{{- define "selectorLabels" -}}
+app.kubernetes.io/name: {{ include "name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 transform dictionnary of environment variables
-Usage : {{ include "impress.env.transformDict" .Values.envVars }}
+Usage : {{ include "env.transformDict" .Values.envVars }}
 
 Example:
 envVars:
@@ -69,7 +69,7 @@ envVars:
       name: secret-name
       key: "key_in_secret"
 */}}
-{{- define "impress.env.transformDict" -}}
+{{- define "env.transformDict" -}}
 {{- range $key, $value := . }}
 - name: {{ $key | quote }}
 {{- if $value | kindIs "map" }}
@@ -82,12 +82,12 @@ envVars:
 
 
 {{/*
-impress env vars
+env vars
 */}}
-{{- define "impress.common.env" -}}
+{{- define "common.env" -}}
 {{- $topLevelScope := index . 0 -}}
 {{- $workerScope := index . 1 -}}
-{{- include "impress.env.transformDict" $workerScope.envVars -}}
+{{- include "env.transformDict" $workerScope.envVars -}}
 {{- end }}
 
 {{/*
@@ -95,10 +95,10 @@ Common labels
 
 Requires array with top level scope and component name
 */}}
-{{- define "impress.common.labels" -}}
+{{- define "common.labels" -}}
 {{- $topLevelScope := index . 0 -}}
 {{- $component := index . 1 -}}
-{{- include "impress.labels" $topLevelScope }}
+{{- include "labels" $topLevelScope }}
 app.kubernetes.io/component: {{ $component }}
 {{- end }}
 
@@ -107,14 +107,14 @@ Common selector labels
 
 Requires array with top level scope and component name
 */}}
-{{- define "impress.common.selectorLabels" -}}
+{{- define "common.selectorLabels" -}}
 {{- $topLevelScope := index . 0 -}}
 {{- $component := index . 1 -}}
-{{- include "impress.selectorLabels" $topLevelScope }}
+{{- include "selectorLabels" $topLevelScope }}
 app.kubernetes.io/component: {{ $component }}
 {{- end }}
 
-{{- define "impress.probes.abstract" -}}
+{{- define "probes.abstract" -}}
 {{- if .exec -}}
 exec:
 {{- toYaml .exec | nindent 2 }}
@@ -135,8 +135,8 @@ Full name for the backend
 
 Requires top level scope
 */}}
-{{- define "impress.backend.fullname" -}}
-{{ include "impress.fullname" . }}-backend
+{{- define "backend.fullname" -}}
+{{ include "fullname" . }}-backend
 {{- end }}
 
 {{/*
@@ -144,8 +144,8 @@ Full name for the frontend
 
 Requires top level scope
 */}}
-{{- define "impress.frontend.fullname" -}}
-{{ include "impress.fullname" . }}-frontend
+{{- define "frontend.fullname" -}}
+{{ include "fullname" . }}-frontend
 {{- end }}
 
 {{/*
@@ -153,32 +153,32 @@ Full name for the webrtc
 
 Requires top level scope
 */}}
-{{- define "impress.webrtc.fullname" -}}
-{{ include "impress.fullname" . }}-webrtc
+{{- define "webrtc.fullname" -}}
+{{ include "fullname" . }}-webrtc
 {{- end }}
 
 {{/*
-Usage : {{ include "impress.secret.dockerconfigjson.name" (dict "fullname" (include "impress.fullname" .) "imageCredentials" .Values.path.to.the.image1) }}
+Usage : {{ include "secret.dockerconfigjson.name" (dict "fullname" (include "fullname" .) "imageCredentials" .Values.path.to.the.image1) }}
 */}}
-{{- define "impress.secret.dockerconfigjson.name" }}
+{{- define "secret.dockerconfigjson.name" }}
 {{- if (default (dict) .imageCredentials).name }}{{ .imageCredentials.name }}{{ else }}{{ .fullname | trunc 63 | trimSuffix "-" }}-dockerconfig{{ end -}}
 {{- end }}
 
 {{/*
-Usage : {{ include "impress.secret.dockerconfigjson" (dict "fullname" (include "impress.fullname" .) "imageCredentials" .Values.path.to.the.image1) }}
+Usage : {{ include "secret.dockerconfigjson" (dict "fullname" (include "fullname" .) "imageCredentials" .Values.path.to.the.image1) }}
 */}}
-{{- define "impress.secret.dockerconfigjson" }}
+{{- define "secret.dockerconfigjson" }}
 {{- if .imageCredentials -}}
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ template "impress.secret.dockerconfigjson.name" (dict "fullname" .fullname "imageCredentials" .imageCredentials) }}
+  name: {{ template "secret.dockerconfigjson.name" (dict "fullname" .fullname "imageCredentials" .imageCredentials) }}
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-weight": "-5"
     "helm.sh/hook-delete-policy": before-hook-creation
 type: kubernetes.io/dockerconfigjson
 data:
-  .dockerconfigjson: {{ template "impress.secret.dockerconfigjson.data" .imageCredentials }}
+  .dockerconfigjson: {{ template "secret.dockerconfigjson.data" .imageCredentials }}
 {{- end -}}
 {{- end }}

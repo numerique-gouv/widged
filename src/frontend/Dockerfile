@@ -17,7 +17,7 @@ FROM frontend-deps as main
 
 WORKDIR /home/frontend/apps/main
 
-FROM frontend-deps as main-dev
+FROM frontend-deps as frontend-dev
 
 WORKDIR /home/frontend/apps/main
 
