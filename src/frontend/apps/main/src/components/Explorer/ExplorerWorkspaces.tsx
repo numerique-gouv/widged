@@ -51,7 +51,7 @@ export const ExplorerWorkspaces = () => {
               <div
                 className="suite__explorer__folder"
                 onClick={() =>
-                  router.push(`/explorer/folders/${params.row.id}`)
+                  router.push(`/explorer/folders?uuid=${params.row.id}`)
                 }
               >
                 <WorkspaceIcon workspace={params.row.workspace} />
