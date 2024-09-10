@@ -49,6 +49,8 @@ services:
     env_file:
       - env.d/development/common
       - env.d/development/postgresql
+    ports:
+      - "8071:8000"
     depends_on:
       - postgresql
       - redis
@@ -69,9 +71,18 @@ services:
     build: 
       context: .
       dockerfile: ./src/frontend/Dockerfile
-      target: main-dev
+      target: frontend-dev
     ports:
       - "3000:3000"
     volumes:
       - ./src/frontend/apps/main:/home/frontend/apps/main
       - /home/frontend/node_modules/
+
+  frontend-production:
+    user: "${DOCKER_USER:-1000}"
+    build:
+      context: .
+      dockerfile: ./src/frontend/Dockerfile
+      target: frontend-production
+    ports:
+      - "3000:8080"
