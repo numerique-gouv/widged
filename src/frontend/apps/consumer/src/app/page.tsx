@@ -1,7 +1,8 @@
 'use client';
 
-import { File, WidgedClient } from 'lasuite-widged';
 import { useEffect, useState } from 'react';
+
+import { File, WidgedClient } from '../../../../packages/widged-sdk';
 
 export default function Page() {
   const [widget, setWidget] = useState(false);

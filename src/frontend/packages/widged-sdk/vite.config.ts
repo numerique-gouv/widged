@@ -11,8 +11,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.tsx'),
-      name: 'lasuite-widged',
-      fileName: 'lasuite-widged',
+      name: 'widged-sdk',
+      fileName: 'widged-sdk',
     },
     rollupOptions: {
       external: ['react', 'react-dom'],
