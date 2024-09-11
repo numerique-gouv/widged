@@ -6,14 +6,14 @@
   },
   "version": "0.0.2",
   "type": "module",
-  "main": "./dist/lasuite-widged.umd.cjs",
-  "module": "./dist/lasuite-widged.js",
+  "main": "./dist/widged-sdk.umd.cjs",
+  "module": "./dist/widged-sdk.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/lasuite-widged.js",
-      "require": "./dist/lasuite-widged.umd.cjs"
+      "import": "./dist/widged-sdk.js",
+      "require": "./dist/widged-sdk.umd.cjs"
     }
   },
   "scripts": {
